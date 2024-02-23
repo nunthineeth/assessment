@@ -4,6 +4,10 @@ on:
     branches:
       - main
       - 'feature/**'
+  pull_request:
+    branches:
+      - main
+      - 'feature/**'
 
 jobs:
   linter:
