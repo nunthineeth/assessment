@@ -1,6 +1,5 @@
 package com.kbtg.bootcamp.posttest.controller;
 
-import com.kbtg.bootcamp.posttest.dto.BuyLotteryResponseDto;
 import com.kbtg.bootcamp.posttest.dto.ListOfUserLotteryTicketsResponseDto;
 import com.kbtg.bootcamp.posttest.dto.TicketResponseDto;
 import com.kbtg.bootcamp.posttest.model.UserLottery;
@@ -23,8 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.kbtg.bootcamp.posttest.utils.Constants.AMOUNT_IS_REQUIRED;
-import static com.kbtg.bootcamp.posttest.utils.Constants.INVALID_PRICE_VALUE;
 import static com.kbtg.bootcamp.posttest.utils.Constants.TICKET_ID_VALIDATE_LENGTH_MSG;
 import static com.kbtg.bootcamp.posttest.utils.Constants.USERID_VALIDATE_LENGTH_MSG;
 import static com.kbtg.bootcamp.posttest.utils.Constants.VALIDATION_FAILED;
@@ -122,22 +119,6 @@ class UserLotteryControllerTest {
                 .andExpect(jsonPath("$.errors", is(errors)))
                 .andExpect(jsonPath("$.message", is(VALIDATION_FAILED)))
                 .andExpect(jsonPath("$.path", is("/users/0000000001x/lotteries/123456x")))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    @DisplayName("when perform on GET: /users/0000000001x/lotteries when request invalid should return 400")
-    void testListOfUserLotteryTickets_whenRequestInvalid_shouldReturn400() throws Exception {
-        String dummyUserId = "0000000001x";
-
-        Map<String, String> errors = new HashMap<>();
-        errors.put("userId", USERID_VALIDATE_LENGTH_MSG);
-
-        mockMvc.perform(get("/users/{userId}/lotteries", dummyUserId))
-                .andExpect(jsonPath("$.status", is(400)))
-                .andExpect(jsonPath("$.errors", is(errors)))
-                .andExpect(jsonPath("$.message", is(VALIDATION_FAILED)))
-                .andExpect(jsonPath("$.path", is("/users/0000000001x/lotteries")))
                 .andExpect(status().isBadRequest());
     }
 

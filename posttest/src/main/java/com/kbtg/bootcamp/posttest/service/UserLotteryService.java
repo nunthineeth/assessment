@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static com.kbtg.bootcamp.posttest.utils.Constants.ERROR_OCCURRED_BUY_LOTTERY;
 import static com.kbtg.bootcamp.posttest.utils.Constants.ERROR_TICKET_NOT_FOUND;
@@ -41,7 +40,7 @@ public class UserLotteryService {
         Lottery lottery = lotteryRepository.findByTicketId(ticketId)
                 .orElseThrow(() -> new ResourceNotFoundException(ERROR_TICKET_NOT_FOUND));
 
-        if(lottery.isDeleted()){
+        if (lottery.isDeleted()) {
             throw new BusinessValidationException(TICKETS_HAVE_BEEN_SOLD);
         }
 
