@@ -2,6 +2,7 @@ package com.kbtg.bootcamp.posttest.service;
 
 import com.kbtg.bootcamp.posttest.dto.ListOfUserLotteryTicketsResponseDto;
 import com.kbtg.bootcamp.posttest.dto.TicketResponseDto;
+import com.kbtg.bootcamp.posttest.exception.BusinessValidationException;
 import com.kbtg.bootcamp.posttest.exception.PersistenceFailureException;
 import com.kbtg.bootcamp.posttest.exception.ResourceNotFoundException;
 import com.kbtg.bootcamp.posttest.model.Lottery;
@@ -22,7 +23,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.kbtg.bootcamp.posttest.utils.Constants.ERROR_OCCURRED_BUY_LOTTERY;
+import static com.kbtg.bootcamp.posttest.utils.Constants.ERROR_TICKET_NOT_FOUND;
 import static com.kbtg.bootcamp.posttest.utils.Constants.NO_RESOURCE_FOUND_TO_SELL_BACK;
+import static com.kbtg.bootcamp.posttest.utils.Constants.TICKETS_HAVE_BEEN_SOLD;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -54,11 +57,9 @@ public class UserLotteryServiceTest {
     @DisplayName("given buy lottery tickets should success")
     void testBuyLotteryTickets_shouldSuccess() {
         Lottery lottery = mockLottery(TICKET_ID, PRICE, AMOUNT);
-        Optional<Lottery> lotteryOptional = Optional.of(lottery);
-
         UserLottery userLottery = mockUserLottery(lottery);
 
-        when(lotteryRepository.findByTicketId(any())).thenReturn(lotteryOptional);
+        when(lotteryRepository.findByTicketId(any())).thenReturn(Optional.of(lottery));
         when(userLotteryRepository.save(any(UserLottery.class))).thenReturn(userLottery);
         when(lotteryRepository.save(any(Lottery.class))).thenReturn(lottery);
 
@@ -74,6 +75,39 @@ public class UserLotteryServiceTest {
         assertEquals(true, actual.getLottery().isDeleted());
         assertEquals(now, actual.getCreatedDate());
         assertEquals(now, actual.getLastModifiedDate());
+    }
+
+    @Test
+    @DisplayName("given buy lottery tickets when ticket not found should return error ")
+    void testBuyLotteryTicket_givenTicketNotFound_shouldReturnError() {
+        when(lotteryRepository.findByTicketId(any())).thenReturn(Optional.empty());
+
+        ResourceNotFoundException actualException = assertThrows(ResourceNotFoundException.class, () -> {
+            userLotteryService.buyLotteryTickets(TICKET_ID, USER_ID);
+        });
+
+        assertEquals(ERROR_TICKET_NOT_FOUND, actualException.getMessage());
+        verify(lotteryRepository, times(1)).findByTicketId(any());
+        verify(userLotteryRepository, never()).save(any(UserLottery.class));
+        verify(lotteryRepository, never()).save(any(Lottery.class));
+    }
+
+    @Test
+    @DisplayName("given buy lottery tickets when ticket have benn sold should return error ")
+    void testBuyLotteryTicket_givenTicketHaveBennSold_shouldReturnError() {
+        Lottery lottery = mockLottery(TICKET_ID, PRICE, AMOUNT);
+        lottery.setDeleted(true);
+
+        when(lotteryRepository.findByTicketId(any())).thenReturn(Optional.of(lottery));
+
+        BusinessValidationException actualException = assertThrows(BusinessValidationException.class, () -> {
+            userLotteryService.buyLotteryTickets(TICKET_ID, USER_ID);
+        });
+
+        assertEquals(TICKETS_HAVE_BEEN_SOLD, actualException.getMessage());
+        verify(lotteryRepository, times(1)).findByTicketId(any());
+        verify(userLotteryRepository, never()).save(any(UserLottery.class));
+        verify(lotteryRepository, never()).save(any(Lottery.class));
     }
 
     @Test
@@ -182,6 +216,7 @@ public class UserLotteryServiceTest {
                 .ticketId(ticketId)
                 .price(price)
                 .amount(amount)
+                .isDeleted(false)
                 .build();
         return lottery;
     }

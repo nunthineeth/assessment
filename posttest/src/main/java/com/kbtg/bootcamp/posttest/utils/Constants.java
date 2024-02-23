@@ -16,6 +16,7 @@ public interface Constants {
     String ERROR_OCCURRED_BUY_LOTTERY = "Error occurred while buying lottery tickets";
     String ERROR_TICKET_ALREADY_EXIST = "Ticket already exist";
     String ERROR_TICKET_NOT_FOUND = "Lottery Tickets not found";
+    String TICKETS_HAVE_BEEN_SOLD = "Lottery tickets have been sold";
 
 }
 

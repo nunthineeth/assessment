@@ -2,6 +2,7 @@ package com.kbtg.bootcamp.posttest.service;
 
 import com.kbtg.bootcamp.posttest.dto.ListOfUserLotteryTicketsResponseDto;
 import com.kbtg.bootcamp.posttest.dto.TicketResponseDto;
+import com.kbtg.bootcamp.posttest.exception.BusinessValidationException;
 import com.kbtg.bootcamp.posttest.exception.PersistenceFailureException;
 import com.kbtg.bootcamp.posttest.exception.ResourceNotFoundException;
 import com.kbtg.bootcamp.posttest.model.Lottery;
@@ -20,6 +21,7 @@ import java.util.Optional;
 import static com.kbtg.bootcamp.posttest.utils.Constants.ERROR_OCCURRED_BUY_LOTTERY;
 import static com.kbtg.bootcamp.posttest.utils.Constants.ERROR_TICKET_NOT_FOUND;
 import static com.kbtg.bootcamp.posttest.utils.Constants.NO_RESOURCE_FOUND_TO_SELL_BACK;
+import static com.kbtg.bootcamp.posttest.utils.Constants.TICKETS_HAVE_BEEN_SOLD;
 
 @Slf4j
 @Service
@@ -38,6 +40,10 @@ public class UserLotteryService {
     public UserLottery buyLotteryTickets(String userId, String ticketId) {
         Lottery lottery = lotteryRepository.findByTicketId(ticketId)
                 .orElseThrow(() -> new ResourceNotFoundException(ERROR_TICKET_NOT_FOUND));
+
+        if(lottery.isDeleted()){
+            throw new BusinessValidationException(TICKETS_HAVE_BEEN_SOLD);
+        }
 
         try {
             UserLottery userLottery = userLotteryRepository.save(UserLottery.builder()
@@ -75,13 +81,9 @@ public class UserLotteryService {
 
     @Transactional
     public TicketResponseDto sellBack(String userId, String ticketId) {
-        Optional<UserLottery> userLotteryOptional = userLotteryRepository.findByUserIdAndTicketId(userId, ticketId);
+        UserLottery userLottery = userLotteryRepository.findByUserIdAndTicketId(userId, ticketId)
+                .orElseThrow(() -> new ResourceNotFoundException(NO_RESOURCE_FOUND_TO_SELL_BACK));
 
-        if (userLotteryOptional.isEmpty()) {
-            throw new ResourceNotFoundException(NO_RESOURCE_FOUND_TO_SELL_BACK);
-        }
-
-        UserLottery userLottery = userLotteryOptional.get();
         Lottery lottery = userLottery.getLottery();
         lottery.setDeleted(false);
         userLottery.setLottery(lottery);
