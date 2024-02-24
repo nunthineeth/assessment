@@ -31,14 +31,17 @@ public class UserLottery {
     @Column(name = "user_lottery_id")
     private Integer id;
 
+    @Column(name = "price", nullable = false)
     private BigDecimal price;
 
+    @Column(name = "amount", nullable = false)
     private int amount;
 
     @ManyToOne
-    @JoinColumn(name = "ticketId")
+    @JoinColumn(name = "ticket_id")
     private Lottery lottery;
 
+    @Column(name = "user_id", nullable = false, length = 10)
     private String userId;
 
     @CreationTimestamp

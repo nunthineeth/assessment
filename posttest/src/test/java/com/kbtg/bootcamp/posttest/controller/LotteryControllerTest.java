@@ -61,7 +61,7 @@ class LotteryControllerTest {
     void testGetLotteryById_shouldBeSuccess() throws Exception {
 
         Lottery lottery = Lottery.builder()
-                .ticketId("111111")
+                .id("111111")
                 .price(BigDecimal.valueOf(80))
                 .amount(10)
                 .createdDate(LocalDateTime.now())
@@ -71,7 +71,7 @@ class LotteryControllerTest {
         when(lotteryService.getLotteryById(any())).thenReturn(lottery);
 
         mockMvc.perform(get("/lotteries/111111"))
-                .andExpect(jsonPath("$.ticketId", is("111111")))
+                .andExpect(jsonPath("$.id", is("111111")))
                 .andExpect(jsonPath("$.price", is(80)))
                 .andExpect(jsonPath("$.amount", is(10)))
                 .andExpect(status().isOk());

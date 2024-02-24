@@ -5,7 +5,6 @@ CREATE TABLE IF NOT EXISTS lotteries (
     ticket_id VARCHAR(6) PRIMARY KEY,
     price NUMERIC(10, 2),
     amount INTEGER,
-    is_deleted BOOLEAN DEFAULT false NOT NULL,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

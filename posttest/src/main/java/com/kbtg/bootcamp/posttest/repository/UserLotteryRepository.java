@@ -13,6 +13,6 @@ public interface UserLotteryRepository extends JpaRepository<UserLottery, Intege
 
     List<UserLottery> findByUserId(String userId);
 
-    @Query("select ul from UserLottery ul where ul.userId = :userId and ul.lottery.ticketId = :ticketId")
-    Optional<UserLottery> findByUserIdAndTicketId(String userId, String ticketId);
+    @Query("select ul from UserLottery ul where ul.userId = :userId and ul.lottery.id = :ticketId")
+    List<UserLottery> findByUserIdAndTicketId(String userId, String ticketId);
 }

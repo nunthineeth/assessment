@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.stereotype.Component;
+
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Component
@@ -26,7 +27,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/admin/**").hasAnyRole("ADMIN")
                         .requestMatchers("/users/**").permitAll()
                         .requestMatchers("/lotteries/**").permitAll()
-                        .requestMatchers("/v3/api-docs/**","/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(withDefaults())
                 .build();

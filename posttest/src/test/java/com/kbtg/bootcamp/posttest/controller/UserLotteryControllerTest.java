@@ -2,6 +2,7 @@ package com.kbtg.bootcamp.posttest.controller;
 
 import com.kbtg.bootcamp.posttest.dto.ListOfUserLotteryTicketsResponseDto;
 import com.kbtg.bootcamp.posttest.dto.TicketResponseDto;
+import com.kbtg.bootcamp.posttest.model.Lottery;
 import com.kbtg.bootcamp.posttest.model.UserLottery;
 import com.kbtg.bootcamp.posttest.service.UserLotteryService;
 import org.junit.jupiter.api.BeforeEach;
@@ -91,9 +92,8 @@ class UserLotteryControllerTest {
         String dummyUserId = "0000000001";
         String dummyTicketId = "123456";
 
-        TicketResponseDto response = new TicketResponseDto(dummyTicketId);
-
-        when(userLotteryService.sellBack(dummyUserId, dummyTicketId)).thenReturn(response);
+        Lottery lottery = Lottery.builder().id(dummyTicketId).amount(1).build();
+        when(userLotteryService.sellBack(dummyUserId, dummyTicketId)).thenReturn(lottery);
 
         mockMvc.perform(delete("/users/{userId}/lotteries/{ticketId}", dummyUserId, dummyTicketId)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)

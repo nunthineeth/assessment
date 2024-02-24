@@ -11,8 +11,8 @@ import java.util.Optional;
 @Repository
 public interface LotteryRepository extends JpaRepository<Lottery, String> {
 
-    @Query("SELECT l.ticketId FROM Lottery l WHERE l.isDeleted = false")
-    List<String> findAllTickets();
+    @Query("SELECT l FROM Lottery l where l.amount > 0")
+    List<Lottery> findRemainingTickets();
 
-    Optional<Lottery> findByTicketId(String id);
+    Optional<Lottery> findById(String id);
 }

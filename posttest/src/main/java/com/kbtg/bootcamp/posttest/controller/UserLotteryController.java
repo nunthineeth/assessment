@@ -3,6 +3,7 @@ package com.kbtg.bootcamp.posttest.controller;
 import com.kbtg.bootcamp.posttest.dto.BuyLotteryResponseDto;
 import com.kbtg.bootcamp.posttest.dto.ListOfUserLotteryTicketsResponseDto;
 import com.kbtg.bootcamp.posttest.dto.TicketResponseDto;
+import com.kbtg.bootcamp.posttest.model.Lottery;
 import com.kbtg.bootcamp.posttest.model.UserLottery;
 import com.kbtg.bootcamp.posttest.service.UserLotteryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.kbtg.bootcamp.posttest.utils.Constants.ERROR_OCCURRED_BUY_LOTTERY;
 import static com.kbtg.bootcamp.posttest.utils.Constants.ERROR_TICKET_NOT_FOUND;
 import static com.kbtg.bootcamp.posttest.utils.Constants.NO_RESOURCE_FOUND_TO_SELL_BACK;
-import static com.kbtg.bootcamp.posttest.utils.Constants.TICKETS_HAVE_BEEN_SOLD;
+import static com.kbtg.bootcamp.posttest.utils.Constants.TICKETS_HAVE_BEEN_SOLD_OUT;
 import static com.kbtg.bootcamp.posttest.utils.Constants.TICKET_ID_VALIDATE_LENGTH_MSG;
 import static com.kbtg.bootcamp.posttest.utils.Constants.USERID_VALIDATE_LENGTH_MSG;
 import static com.kbtg.bootcamp.posttest.utils.Constants.VALIDATION_FAILED;
@@ -50,7 +51,7 @@ public class UserLotteryController {
                                     array = @ArraySchema(schema = @Schema(implementation = BuyLotteryResponseDto.class)))
                     }),
             @ApiResponse(responseCode = "400", description = VALIDATION_FAILED),
-            @ApiResponse(responseCode = "400", description = TICKETS_HAVE_BEEN_SOLD),
+            @ApiResponse(responseCode = "400", description = TICKETS_HAVE_BEEN_SOLD_OUT),
             @ApiResponse(responseCode = "404", description = ERROR_TICKET_NOT_FOUND),
             @ApiResponse(responseCode = "500", description = ERROR_OCCURRED_BUY_LOTTERY)
     })
@@ -92,6 +93,7 @@ public class UserLotteryController {
                                    @Parameter(name = "userId", description = "User id", example = "1111111111") String userId,
                                    @PathVariable @Size(min = 6, max = 6, message = TICKET_ID_VALIDATE_LENGTH_MSG)
                                    @Parameter(name = "ticketId", description = "Ticket Id", example = "123456") String ticketId) {
-        return ResponseEntity.ok(userLotteryService.sellBack(userId, ticketId));
+        Lottery lottery = userLotteryService.sellBack(userId, ticketId);
+        return ResponseEntity.ok(new TicketResponseDto(lottery.getId()));
     }
 }

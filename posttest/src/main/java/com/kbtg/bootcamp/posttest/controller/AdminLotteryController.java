@@ -45,6 +45,6 @@ public class AdminLotteryController {
     @PostMapping("")
     public ResponseEntity create(@Valid @RequestBody CreateLotteryRequestDto request) {
         Lottery lottery = lotteryService.create(request);
-        return new ResponseEntity(new TicketResponseDto(lottery.getTicketId()), HttpStatus.CREATED);
+        return new ResponseEntity(new TicketResponseDto(lottery.getId()), HttpStatus.CREATED);
     }
 }

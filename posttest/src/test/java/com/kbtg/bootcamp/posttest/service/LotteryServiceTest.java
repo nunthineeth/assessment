@@ -2,7 +2,6 @@ package com.kbtg.bootcamp.posttest.service;
 
 import com.kbtg.bootcamp.posttest.dto.CreateLotteryRequestDto;
 import com.kbtg.bootcamp.posttest.dto.TicketsResponseDto;
-import com.kbtg.bootcamp.posttest.exception.BusinessValidationException;
 import com.kbtg.bootcamp.posttest.exception.ResourceNotFoundException;
 import com.kbtg.bootcamp.posttest.model.Lottery;
 import com.kbtg.bootcamp.posttest.repository.LotteryRepository;
@@ -14,10 +13,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.kbtg.bootcamp.posttest.utils.Constants.ERROR_TICKET_ALREADY_EXIST;
 import static com.kbtg.bootcamp.posttest.utils.Constants.ERROR_TICKET_NOT_FOUND;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -25,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -48,34 +46,34 @@ public class LotteryServiceTest {
     void testCreateLotteryTicket_shouldSuccess() {
         Lottery lottery = mockLottery(TICKET_ID, PRICE, AMOUNT);
 
-        when(lotteryRepository.findByTicketId(any())).thenReturn(Optional.empty());
+        when(lotteryRepository.findById(any())).thenReturn(Optional.empty());
         when(lotteryRepository.save(any(Lottery.class))).thenReturn(lottery);
 
         Lottery actual = lotteryService.create(mockCreateLotteryRequest(TICKET_ID, PRICE.toString(), String.valueOf(AMOUNT)));
 
-        verify(lotteryRepository, times(1)).findByTicketId(any());
+        verify(lotteryRepository, times(1)).findById(any());
         verify(lotteryRepository, times(1)).save(any(Lottery.class));
 
-        assertEquals(TICKET_ID, actual.getTicketId());
+        assertEquals(TICKET_ID, actual.getId());
         assertEquals(PRICE, actual.getPrice());
         assertEquals(AMOUNT, actual.getAmount());
-        assertEquals(false, actual.isDeleted());
     }
 
     @Test
-    @DisplayName("given create lottery tickets already created should return error")
-    void testCreateLotteryTicket_whenAlreadyCreated_shouldReturnError() {
-        Optional<Lottery> lotteryOptional = Optional.of(mockLottery(TICKET_ID, PRICE, AMOUNT));
+    @DisplayName("given create lottery tickets already created should add amount")
+    void testCreateLotteryTicket_whenAlreadyCreated_shouldAddAmount() {
+        Optional<Lottery> lotteryOptional = Optional.of(mockLottery(TICKET_ID, PRICE, 10));
 
-        when(lotteryRepository.findByTicketId(any())).thenReturn(lotteryOptional);
+        when(lotteryRepository.findById(any())).thenReturn(lotteryOptional);
 
-        BusinessValidationException actualException = assertThrows(BusinessValidationException.class, () -> {
-            lotteryService.create(mockCreateLotteryRequest(TICKET_ID, PRICE.toString(), String.valueOf(AMOUNT)));
-        });
+        Lottery actual = lotteryService.create(mockCreateLotteryRequest(TICKET_ID, PRICE.toString(), String.valueOf(AMOUNT)));
 
-        assertEquals(ERROR_TICKET_ALREADY_EXIST, actualException.getMessage());
-        verify(lotteryRepository, times(1)).findByTicketId(TICKET_ID);
-        verify(lotteryRepository, never()).save(any(Lottery.class));
+        verify(lotteryRepository, times(1)).findById(any());
+        verify(lotteryRepository, times(1)).save(any(Lottery.class));
+
+        assertEquals(TICKET_ID, actual.getId());
+        assertEquals(PRICE, actual.getPrice());
+        assertEquals(11, actual.getAmount());
     }
 
     @Test
@@ -87,7 +85,7 @@ public class LotteryServiceTest {
         Lottery actual = lotteryService.getLotteryById(TICKET_ID);
 
         assertNotNull(actual);
-        assertEquals(TICKET_ID, actual.getTicketId());
+        assertEquals(TICKET_ID, actual.getId());
         verify(lotteryRepository, times(1)).findById(any());
     }
 
@@ -105,21 +103,40 @@ public class LotteryServiceTest {
     }
 
     @Test
-    @DisplayName("given get lotteries should success")
-    void testGetLotteries_shouldBeSuccess() {
-        List<String> expected = List.of(TICKET_ID);
-        when(lotteryRepository.findAllTickets()).thenReturn(expected);
+    @DisplayName("given get lottery tickets remaining should return list of tickets")
+    void testGetLotteries_givenThereAreTicketRemaining_shouldReturnListOfTickets() {
+        Lottery lottery1 = mockLottery(TICKET_ID, PRICE, 3);
+        Lottery lottery2 = mockLottery("111111", PRICE, 1);
+        when(lotteryRepository.findRemainingTickets()).thenReturn(List.of(lottery1, lottery2));
 
         TicketsResponseDto actual = lotteryService.getLotteries();
 
+        List<String> expected = List.of(TICKET_ID, TICKET_ID, TICKET_ID, "111111");
+
         assertNotNull(actual);
         assertThat(actual.tickets(), is(expected));
-        verify(lotteryRepository, times(1)).findAllTickets();
+        assertEquals(actual.tickets().size(), 4);
+        verify(lotteryRepository, times(1)).findRemainingTickets();
+    }
+
+    @Test
+    @DisplayName("given get no lottery tickets remaining should return empty list")
+    void testGetLotteries_givenNoTicketRemaining_shouldReturnEmptyList() {
+        when(lotteryRepository.findRemainingTickets()).thenReturn(List.of());
+
+        TicketsResponseDto actual = lotteryService.getLotteries();
+
+        List<String> expected = List.of();
+
+        assertNotNull(actual);
+        assertThat(actual.tickets(), is(expected));
+        assertEquals(actual.tickets().size(), 0);
+        verify(lotteryRepository, times(1)).findRemainingTickets();
     }
 
     private static Lottery mockLottery(String ticketId, BigDecimal price, int amount) {
         Lottery lottery = Lottery.builder()
-                .ticketId(ticketId)
+                .id(ticketId)
                 .price(price)
                 .amount(amount)
                 .build();

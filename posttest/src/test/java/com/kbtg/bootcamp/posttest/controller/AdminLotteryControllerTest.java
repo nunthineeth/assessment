@@ -91,7 +91,7 @@ class AdminLotteryControllerTest {
         CreateLotteryRequestDto request = new CreateLotteryRequestDto("111111", "80", "10");
 
         Lottery lottery = new Lottery();
-        lottery.setTicketId("111111");
+        lottery.setId("111111");
 
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(request);
