@@ -29,7 +29,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class LotteryServiceTest {
+class LotteryServiceTest {
 
     @InjectMocks
     LotteryService lotteryService;
@@ -115,7 +115,7 @@ public class LotteryServiceTest {
 
         assertNotNull(actual);
         assertThat(actual.tickets(), is(expected));
-        assertEquals(actual.tickets().size(), 4);
+        assertEquals(4, actual.tickets().size());
         verify(lotteryRepository, times(1)).findRemainingTickets();
     }
 
@@ -130,7 +130,7 @@ public class LotteryServiceTest {
 
         assertNotNull(actual);
         assertThat(actual.tickets(), is(expected));
-        assertEquals(actual.tickets().size(), 0);
+        assertEquals(0, actual.tickets().size());
         verify(lotteryRepository, times(1)).findRemainingTickets();
     }
 

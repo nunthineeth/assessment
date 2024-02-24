@@ -32,7 +32,7 @@ public class AdminLotteryController {
     }
 
     @Operation(summary = "Create lottery tickets")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Create Success",
                     content = {
                             @Content(mediaType = "application/json",
@@ -43,8 +43,8 @@ public class AdminLotteryController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @PostMapping("")
-    public ResponseEntity create(@Valid @RequestBody CreateLotteryRequestDto request) {
+    public ResponseEntity<TicketResponseDto> create(@Valid @RequestBody CreateLotteryRequestDto request) {
         Lottery lottery = lotteryService.create(request);
-        return new ResponseEntity(new TicketResponseDto(lottery.getId()), HttpStatus.CREATED);
+        return new ResponseEntity<>(new TicketResponseDto(lottery.getId()), HttpStatus.CREATED);
     }
 }

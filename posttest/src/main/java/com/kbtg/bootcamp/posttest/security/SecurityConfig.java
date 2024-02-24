@@ -1,13 +1,15 @@
 package com.kbtg.bootcamp.posttest.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.stereotype.Component;
@@ -16,14 +18,17 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Component
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class SecurityConfig {
+
+    @Value("${app.mock.user.password}")
+    private String password;
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((requests) -> requests
+                .authorizeHttpRequests(requests -> requests
                         .requestMatchers(HttpMethod.POST, "/admin/**").hasAnyRole("ADMIN")
                         .requestMatchers("/users/**").permitAll()
                         .requestMatchers("/lotteries/**").permitAll()
@@ -35,17 +40,21 @@ public class SecurityConfig {
 
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
-        User.UserBuilder users = User.withDefaultPasswordEncoder();
-        UserDetails user = users
+        UserDetails user = User.builder()
                 .username("user")
-                .password("password")
+                .password(bCryptPasswordEncoder().encode(password))
                 .roles("USER")
                 .build();
-        UserDetails admin = users
+        UserDetails admin = User.builder()
                 .username("admin")
-                .password("password")
+                .password(bCryptPasswordEncoder().encode(password))
                 .roles("USER", "ADMIN")
                 .build();
         return new InMemoryUserDetailsManager(user, admin);
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

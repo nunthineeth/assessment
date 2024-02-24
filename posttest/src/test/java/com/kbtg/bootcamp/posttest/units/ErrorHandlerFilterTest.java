@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
-public class ErrorHandlerFilterTest {
+class ErrorHandlerFilterTest {
 
     @Mock
     private MockHttpServletRequest request;
@@ -38,7 +38,7 @@ public class ErrorHandlerFilterTest {
     }
 
     @Test
-    public void testHandleBusinessValidationException_shouldBusinessValidationResponse() {
+    void testHandleBusinessValidationException_shouldBusinessValidationResponse() {
         BusinessValidationException exception = new BusinessValidationException(ERROR_TICKET_ALREADY_EXIST);
         ResponseEntity<ErrorResponseDto> response = errorHandlerFilter.handleBusinessValidationException(httpServletRequest, exception);
 
@@ -51,7 +51,7 @@ public class ErrorHandlerFilterTest {
     }
 
     @Test
-    public void testHandleNotFoundException_ShouldReturnNotFoundResponse() {
+    void testHandleNotFoundException_ShouldReturnNotFoundResponse() {
         ResourceNotFoundException exception = new ResourceNotFoundException(RESOURCE_NOT_FOUND);
         ResponseEntity<ErrorResponseDto> response = errorHandlerFilter.handleResourceNotFoundException(httpServletRequest, exception);
 
@@ -64,7 +64,7 @@ public class ErrorHandlerFilterTest {
     }
 
     @Test
-    public void testHandlePersistenceFailureException_ShouldReturnPersistenceFailureResponse() {
+    void testHandlePersistenceFailureException_ShouldReturnPersistenceFailureResponse() {
         PersistenceFailureException exception = new PersistenceFailureException(ERROR_OCCURRED_BUY_LOTTERY);
         ResponseEntity<ErrorResponseDto> response = errorHandlerFilter.handlePersistenceFailureException(httpServletRequest, exception);
 

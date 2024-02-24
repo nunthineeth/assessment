@@ -7,6 +7,8 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Iterator;
 
@@ -19,7 +21,8 @@ import static com.kbtg.bootcamp.posttest.utils.Constants.TICKET_ID_VALIDATE_LENG
 import static com.kbtg.bootcamp.posttest.utils.Constants.TICKET_IS_REQUIRED;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CreateLotteryRequestDtoTest {
+@ExtendWith(MockitoExtension.class)
+class CreateLotteryRequestDtoTest {
 
     private static Validator validator;
 

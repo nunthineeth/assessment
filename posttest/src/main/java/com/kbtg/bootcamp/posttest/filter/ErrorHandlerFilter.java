@@ -33,38 +33,38 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class ErrorHandlerFilter extends ResponseEntityExceptionHandler {
 
     @Override
-    public ResponseEntity handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+    public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         var errors = new HashMap<>();
         for (var err : ex.getBindingResult().getAllErrors())
             errors.put(((FieldError) err).getField(), err.getDefaultMessage());
 
-        String path = ((ServletWebRequest) request).getRequest().getRequestURI().toString();
+        String path = ((ServletWebRequest) request).getRequest().getRequestURI();
         ErrorResponseDto response = new ErrorResponseDto(BAD_REQUEST.value(), LocalDateTime.now(), errors, VALIDATION_FAILED, path);
         return this.handleExceptionInternal(ex, response, headers, status, request);
     }
 
     @ExceptionHandler(BusinessValidationException.class)
-    public ResponseEntity handleBusinessValidationException(HttpServletRequest request, BusinessValidationException e) {
+    public ResponseEntity<ErrorResponseDto> handleBusinessValidationException(HttpServletRequest request, BusinessValidationException e) {
         ErrorResponseDto response = new ErrorResponseDto(BAD_REQUEST.value(), LocalDateTime.now(), BAD_REQUEST.getReasonPhrase(), e.getMessage(), request.getRequestURI());
-        return new ResponseEntity(response, BAD_REQUEST);
+        return new ResponseEntity<>(response, BAD_REQUEST);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity handleResourceNotFoundException(HttpServletRequest request, ResourceNotFoundException e) {
+    public ResponseEntity<ErrorResponseDto> handleResourceNotFoundException(HttpServletRequest request, ResourceNotFoundException e) {
         ErrorResponseDto response = new ErrorResponseDto(NOT_FOUND.value(), LocalDateTime.now(), NOT_FOUND.getReasonPhrase(), e.getMessage(), request.getRequestURI());
-        return new ResponseEntity(response, NOT_FOUND);
+        return new ResponseEntity<>(response, NOT_FOUND);
     }
 
     @ExceptionHandler(PersistenceFailureException.class)
-    public ResponseEntity handlePersistenceFailureException(HttpServletRequest request, PersistenceFailureException e) {
+    public ResponseEntity<ErrorResponseDto> handlePersistenceFailureException(HttpServletRequest request, PersistenceFailureException e) {
         ErrorResponseDto response = new ErrorResponseDto(INTERNAL_SERVER_ERROR.value(), LocalDateTime.now(), INTERNAL_SERVER_ERROR.getReasonPhrase(), e.getMessage(), request.getRequestURI());
-        return new ResponseEntity(response, INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(response, INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseBody
     @ResponseStatus(BAD_REQUEST)
-    public ResponseEntity handleRequestPathVariablesValidationException(HttpServletRequest request, ConstraintViolationException e) {
+    public ResponseEntity<ErrorResponseDto> handleRequestPathVariablesValidationException(HttpServletRequest request, ConstraintViolationException e) {
         var errors = new HashMap<>();
         for (var err : e.getConstraintViolations()) {
             err.getMessageTemplate();
@@ -77,6 +77,6 @@ public class ErrorHandlerFilter extends ResponseEntityExceptionHandler {
                 VALIDATION_FAILED,
                 request.getRequestURI());
 
-        return new ResponseEntity(response, BAD_REQUEST);
+        return new ResponseEntity<>(response, BAD_REQUEST);
     }
 }

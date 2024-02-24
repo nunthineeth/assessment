@@ -44,7 +44,7 @@ public class UserLotteryController {
     }
 
     @Operation(summary = "Buy lottery tickets")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Buy Success",
                     content = {
                             @Content(mediaType = "application/json",
@@ -56,16 +56,16 @@ public class UserLotteryController {
             @ApiResponse(responseCode = "500", description = ERROR_OCCURRED_BUY_LOTTERY)
     })
     @PostMapping("/users/{userId}/lotteries/{ticketId}")
-    public ResponseEntity buyLotteryTickets(@PathVariable @Size(min = 10, max = 10, message = USERID_VALIDATE_LENGTH_MSG)
+    public ResponseEntity<BuyLotteryResponseDto> buyLotteryTickets(@PathVariable @Size(min = 10, max = 10, message = USERID_VALIDATE_LENGTH_MSG)
                                             @Parameter(name = "userId", description = "User id", example = "1111111111") String userId,
                                             @PathVariable @Size(min = 6, max = 6, message = TICKET_ID_VALIDATE_LENGTH_MSG)
                                             @Parameter(name = "ticketId", description = "Ticket Id", example = "123456") String ticketId) {
         UserLottery response = userLotteryService.buyLotteryTickets(userId, ticketId);
-        return new ResponseEntity(new BuyLotteryResponseDto(response.getId()), HttpStatus.CREATED);
+        return new ResponseEntity<>(new BuyLotteryResponseDto(response.getId()), HttpStatus.CREATED);
     }
 
     @Operation(summary = "List of user lottery tickets")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = {
                             @Content(mediaType = "application/json",
@@ -73,12 +73,12 @@ public class UserLotteryController {
                     })
     })
     @GetMapping("/users/{userId}/lotteries")
-    public ResponseEntity listOfUserLotteryTickets(@PathVariable @Parameter(name = "userId", description = "User id", example = "1111111111") String userId) {
+    public ResponseEntity<ListOfUserLotteryTicketsResponseDto> listOfUserLotteryTickets(@PathVariable @Parameter(name = "userId", description = "User id", example = "1111111111") String userId) {
         return ResponseEntity.ok(userLotteryService.listOfUserLotteryTickets(userId));
     }
 
     @Operation(summary = "Sell back lottery tickets")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = {
                             @Content(mediaType = "application/json",
@@ -89,7 +89,7 @@ public class UserLotteryController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @DeleteMapping("/users/{userId}/lotteries/{ticketId}")
-    public ResponseEntity sellBack(@PathVariable @Size(min = 10, max = 10, message = USERID_VALIDATE_LENGTH_MSG)
+    public ResponseEntity<TicketResponseDto> sellBack(@PathVariable @Size(min = 10, max = 10, message = USERID_VALIDATE_LENGTH_MSG)
                                    @Parameter(name = "userId", description = "User id", example = "1111111111") String userId,
                                    @PathVariable @Size(min = 6, max = 6, message = TICKET_ID_VALIDATE_LENGTH_MSG)
                                    @Parameter(name = "ticketId", description = "Ticket Id", example = "123456") String ticketId) {

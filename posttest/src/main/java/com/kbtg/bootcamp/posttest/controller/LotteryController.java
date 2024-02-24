@@ -29,7 +29,7 @@ public class LotteryController {
     }
 
     @Operation(summary = "Get lottery tickets")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = {
                             @Content(mediaType = "application/json",
@@ -37,12 +37,12 @@ public class LotteryController {
                     })
     })
     @GetMapping("")
-    public ResponseEntity getLotteries() {
+    public ResponseEntity<TicketsResponseDto> getLotteries() {
         return ResponseEntity.ok(lotteryService.getLotteries());
     }
 
     @Operation(summary = "Get lottery tickets by ticketId")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = {
                             @Content(mediaType = "application/json",
@@ -51,7 +51,7 @@ public class LotteryController {
             @ApiResponse(responseCode = "404", description = ERROR_TICKET_NOT_FOUND)
     })
     @GetMapping("/{id}")
-    public ResponseEntity getLotteryById(@PathVariable @Parameter(name = "id", description = "Ticket id", example = "123456") String id) {
+    public ResponseEntity<Lottery> getLotteryById(@PathVariable @Parameter(name = "id", description = "Ticket id", example = "123456") String id) {
         return ResponseEntity.ok(lotteryService.getLotteryById(id));
     }
 }
