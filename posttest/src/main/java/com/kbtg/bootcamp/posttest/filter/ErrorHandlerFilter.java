@@ -23,7 +23,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
-import static com.kbtg.bootcamp.posttest.utils.Constants.VALIDATION_FAILED;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.VALIDATION_FAILED;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;

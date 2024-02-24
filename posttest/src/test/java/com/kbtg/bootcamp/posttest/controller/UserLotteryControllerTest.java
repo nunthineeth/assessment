@@ -1,7 +1,6 @@
 package com.kbtg.bootcamp.posttest.controller;
 
 import com.kbtg.bootcamp.posttest.dto.ListOfUserLotteryTicketsResponseDto;
-import com.kbtg.bootcamp.posttest.dto.TicketResponseDto;
 import com.kbtg.bootcamp.posttest.model.Lottery;
 import com.kbtg.bootcamp.posttest.model.UserLottery;
 import com.kbtg.bootcamp.posttest.service.UserLotteryService;
@@ -23,9 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.kbtg.bootcamp.posttest.utils.Constants.TICKET_ID_VALIDATE_LENGTH_MSG;
-import static com.kbtg.bootcamp.posttest.utils.Constants.USERID_VALIDATE_LENGTH_MSG;
-import static com.kbtg.bootcamp.posttest.utils.Constants.VALIDATION_FAILED;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.TICKET_ID_VALIDATE_LENGTH_MSG;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.USERID_VALIDATE_LENGTH_MSG;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.VALIDATION_FAILED;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;

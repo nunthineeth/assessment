@@ -1,7 +1,6 @@
 package com.kbtg.bootcamp.posttest.service;
 
 import com.kbtg.bootcamp.posttest.dto.ListOfUserLotteryTicketsResponseDto;
-import com.kbtg.bootcamp.posttest.dto.TicketResponseDto;
 import com.kbtg.bootcamp.posttest.exception.BusinessValidationException;
 import com.kbtg.bootcamp.posttest.exception.PersistenceFailureException;
 import com.kbtg.bootcamp.posttest.exception.ResourceNotFoundException;
@@ -22,10 +21,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.kbtg.bootcamp.posttest.utils.Constants.ERROR_OCCURRED_BUY_LOTTERY;
-import static com.kbtg.bootcamp.posttest.utils.Constants.ERROR_TICKET_NOT_FOUND;
-import static com.kbtg.bootcamp.posttest.utils.Constants.NO_RESOURCE_FOUND_TO_SELL_BACK;
-import static com.kbtg.bootcamp.posttest.utils.Constants.TICKETS_HAVE_BEEN_SOLD_OUT;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.ERROR_OCCURRED_BUY_LOTTERY;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.ERROR_TICKET_NOT_FOUND;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.NO_RESOURCE_FOUND_TO_SELL_BACK;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.TICKETS_HAVE_BEEN_SOLD_OUT;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;

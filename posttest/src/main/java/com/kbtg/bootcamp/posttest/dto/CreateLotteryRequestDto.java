@@ -7,13 +7,13 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import static com.kbtg.bootcamp.posttest.utils.Constants.AMOUNT_IS_REQUIRED;
-import static com.kbtg.bootcamp.posttest.utils.Constants.INVALID_AMOUNT_VALUE;
-import static com.kbtg.bootcamp.posttest.utils.Constants.INVALID_PRICE_VALUE;
-import static com.kbtg.bootcamp.posttest.utils.Constants.INVALID_TICKET_ID;
-import static com.kbtg.bootcamp.posttest.utils.Constants.PRICE_IS_REQUIRED;
-import static com.kbtg.bootcamp.posttest.utils.Constants.TICKET_ID_VALIDATE_LENGTH_MSG;
-import static com.kbtg.bootcamp.posttest.utils.Constants.TICKET_IS_REQUIRED;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.AMOUNT_IS_REQUIRED;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.INVALID_AMOUNT_VALUE;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.INVALID_PRICE_VALUE;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.INVALID_TICKET_ID;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.PRICE_IS_REQUIRED;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.TICKET_ID_VALIDATE_LENGTH_MSG;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.TICKET_IS_REQUIRED;
 
 @Data
 @AllArgsConstructor

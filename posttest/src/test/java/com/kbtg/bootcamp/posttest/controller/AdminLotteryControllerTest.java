@@ -23,10 +23,10 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.kbtg.bootcamp.posttest.utils.Constants.AMOUNT_IS_REQUIRED;
-import static com.kbtg.bootcamp.posttest.utils.Constants.INVALID_PRICE_VALUE;
-import static com.kbtg.bootcamp.posttest.utils.Constants.TICKET_ID_VALIDATE_LENGTH_MSG;
-import static com.kbtg.bootcamp.posttest.utils.Constants.VALIDATION_FAILED;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.AMOUNT_IS_REQUIRED;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.INVALID_PRICE_VALUE;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.TICKET_ID_VALIDATE_LENGTH_MSG;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.VALIDATION_FAILED;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;

@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.kbtg.bootcamp.posttest.utils.Constants.ERROR_TICKET_ALREADY_EXIST;
-import static com.kbtg.bootcamp.posttest.utils.Constants.VALIDATION_FAILED;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.ERROR_TICKET_ALREADY_EXIST;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.VALIDATION_FAILED;
 
 @RestController
 @RequestMapping("/admin/lotteries")

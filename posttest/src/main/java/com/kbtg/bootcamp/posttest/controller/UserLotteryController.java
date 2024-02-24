@@ -24,13 +24,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.kbtg.bootcamp.posttest.utils.Constants.ERROR_OCCURRED_BUY_LOTTERY;
-import static com.kbtg.bootcamp.posttest.utils.Constants.ERROR_TICKET_NOT_FOUND;
-import static com.kbtg.bootcamp.posttest.utils.Constants.NO_RESOURCE_FOUND_TO_SELL_BACK;
-import static com.kbtg.bootcamp.posttest.utils.Constants.TICKETS_HAVE_BEEN_SOLD_OUT;
-import static com.kbtg.bootcamp.posttest.utils.Constants.TICKET_ID_VALIDATE_LENGTH_MSG;
-import static com.kbtg.bootcamp.posttest.utils.Constants.USERID_VALIDATE_LENGTH_MSG;
-import static com.kbtg.bootcamp.posttest.utils.Constants.VALIDATION_FAILED;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.ERROR_OCCURRED_BUY_LOTTERY;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.ERROR_TICKET_NOT_FOUND;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.NO_RESOURCE_FOUND_TO_SELL_BACK;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.TICKETS_HAVE_BEEN_SOLD_OUT;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.TICKET_ID_VALIDATE_LENGTH_MSG;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.USERID_VALIDATE_LENGTH_MSG;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.VALIDATION_FAILED;
 
 @RestController
 @RequestMapping("")

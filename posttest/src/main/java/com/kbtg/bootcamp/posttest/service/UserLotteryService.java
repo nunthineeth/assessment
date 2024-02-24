@@ -1,7 +1,6 @@
 package com.kbtg.bootcamp.posttest.service;
 
 import com.kbtg.bootcamp.posttest.dto.ListOfUserLotteryTicketsResponseDto;
-import com.kbtg.bootcamp.posttest.dto.TicketResponseDto;
 import com.kbtg.bootcamp.posttest.exception.PersistenceFailureException;
 import com.kbtg.bootcamp.posttest.exception.ResourceNotFoundException;
 import com.kbtg.bootcamp.posttest.model.Lottery;
@@ -17,9 +16,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kbtg.bootcamp.posttest.utils.Constants.ERROR_OCCURRED_BUY_LOTTERY;
-import static com.kbtg.bootcamp.posttest.utils.Constants.ERROR_TICKET_NOT_FOUND;
-import static com.kbtg.bootcamp.posttest.utils.Constants.NO_RESOURCE_FOUND_TO_SELL_BACK;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.ERROR_OCCURRED_BUY_LOTTERY;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.ERROR_TICKET_NOT_FOUND;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.NO_RESOURCE_FOUND_TO_SELL_BACK;
 
 @Slf4j
 @Service

@@ -16,9 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import static com.kbtg.bootcamp.posttest.utils.Constants.ERROR_OCCURRED_BUY_LOTTERY;
-import static com.kbtg.bootcamp.posttest.utils.Constants.ERROR_TICKET_ALREADY_EXIST;
-import static com.kbtg.bootcamp.posttest.utils.Constants.RESOURCE_NOT_FOUND;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.ERROR_OCCURRED_BUY_LOTTERY;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.ERROR_TICKET_ALREADY_EXIST;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.RESOURCE_NOT_FOUND;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.lenient;
 

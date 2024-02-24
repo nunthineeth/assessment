@@ -15,7 +15,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import static com.kbtg.bootcamp.posttest.utils.Constants.TICKETS_HAVE_BEEN_SOLD_OUT;
+import static com.kbtg.bootcamp.posttest.utils.ErrorMessage.TICKETS_HAVE_BEEN_SOLD_OUT;
 
 @Entity
 @Table(name = "lotteries")
